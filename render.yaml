@@ -6,6 +6,8 @@ services:
     startCommand: node server.js
     rootDir: user-service
     envVars:
+      - key: NODE_VERSION
+        value: "20"
       - key: PORT
         value: "3001"
       - key: JWT_SECRET
@@ -18,6 +20,8 @@ services:
     startCommand: node server.js
     rootDir: product-service
     envVars:
+      - key: NODE_VERSION
+        value: "20"
       - key: PORT
         value: "3002"
 
@@ -28,6 +32,8 @@ services:
     startCommand: node server.js
     rootDir: cart-service
     envVars:
+      - key: NODE_VERSION
+        value: "20"
       - key: PORT
         value: "3003"
 
@@ -38,6 +44,8 @@ services:
     startCommand: node server.js
     rootDir: order-service
     envVars:
+      - key: NODE_VERSION
+        value: "20"
       - key: PORT
         value: "3004"
 
@@ -48,6 +56,8 @@ services:
     startCommand: npm start
     rootDir: serverless
     envVars:
+      - key: NODE_VERSION
+        value: "20"
       - key: PORT
         value: "5001"
 
@@ -58,6 +68,8 @@ services:
     startCommand: node server.js
     rootDir: payment-service
     envVars:
+      - key: NODE_VERSION
+        value: "20"
       - key: PORT
         value: "3005"
       - key: SERVERLESS_URL
@@ -70,6 +82,8 @@ services:
     startCommand: node server.js
     rootDir: api-gateway
     envVars:
+      - key: NODE_VERSION
+        value: "20"
       - key: PORT
         value: "8080"
       - key: USER_SERVICE_URL
@@ -90,5 +104,7 @@ services:
     staticPublishPath: ./dist
     rootDir: frontend
     envVars:
+      - key: NODE_VERSION
+        value: "20"
       - key: VITE_API_URL
         sync: false

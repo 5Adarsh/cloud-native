@@ -18,7 +18,10 @@ const connectDB = async () => {
   }
 
   mongoose.connect(MONGO_URI)
-    .then(() => console.log('Product DB Connected'))
+    .then(() => {
+      console.log('Product DB Connected');
+      seedProducts();
+    })
     .catch(err => console.log(err));
 };
 connectDB();
@@ -51,7 +54,6 @@ const seedProducts = async () => {
     console.log('Seeded Products successfully with richer data');
   }
 };
-seedProducts();
 
 app.get('/', async (req, res) => {
   const { search, category } = req.query;

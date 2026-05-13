@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: ecommerce-mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - USER_SERVICE_URL=http://user-service:3001
+      - PRODUCT_SERVICE_URL=http://product-service:3002
+      - CART_SERVICE_URL=http://cart-service:3003
+      - ORDER_SERVICE_URL=http://order-service:3004
+      - PAYMENT_SERVICE_URL=http://payment-service:3005
+    depends_on:
+      - user-service
+      - product-service
+      - cart-service
+      - order-service
+      - payment-service
+
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - MONGO_URI=mongodb://mongodb:27017/user-db
+      - JWT_SECRET=supersecretjwtkey
+    depends_on:
+      - mongodb
+
+  product-service:
+    build: ./product-service
+    container_name: product-service
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - MONGO_URI=mongodb://mongodb:27017/product-db
+    depends_on:
+      - mongodb
+
+  cart-service:
+    build: ./cart-service
+    container_name: cart-service
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - MONGO_URI=mongodb://mongodb:27017/cart-db
+    depends_on:
+      - mongodb
+
+  order-service:
+    build: ./order-service
+    container_name: order-service
+    ports:
+      - "3004:3004"
+    environment:
+      - PORT=3004
+      - MONGO_URI=mongodb://mongodb:27017/order-db
+    depends_on:
+      - mongodb
+
+  payment-service:
+    build: ./payment-service
+    container_name: payment-service
+    ports:
+      - "3005:3005"
+    environment:
+      - PORT=3005
+      - SERVERLESS_URL=http://serverless-webhook:5001/ecommerce/us-central1/paymentWebhook
+    depends_on:
+      - serverless-webhook
+
+  serverless-webhook:
+    build: ./serverless
+    container_name: serverless-webhook
+    ports:
+      - "5001:5001"
+
+  frontend:
+    build: ./frontend
+    container_name: react-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - api-gateway
+
+volumes:
+  mongo-data:

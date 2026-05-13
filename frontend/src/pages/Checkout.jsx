@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_URL } from '../config';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,7 +16,7 @@ function Checkout() {
       const total = 100;
       
       // Process payment
-      const paymentRes = await axios.post('http://localhost:8080/api/payments/process', {
+      const paymentRes = await axios.post(`${API_URL}/api/payments/process`, {
         userId: user.id,
         orderId: `ORD-${Date.now()}`,
         amount: total
@@ -23,14 +24,14 @@ function Checkout() {
 
       if (paymentRes.data.success) {
         // Place order
-        await axios.post('http://localhost:8080/api/orders', {
+        await axios.post(`${API_URL}/api/orders`, {
           userId: user.id,
           items: [], // usually passed from cart
           total
         });
         
         // Clear cart
-        await axios.delete(`http://localhost:8080/api/cart/${user.id}`);
+        await axios.delete(`${API_URL}/api/cart/${user.id}`);
         
         setStatus('Payment successful! Order placed.');
         setTimeout(() => navigate('/'), 2000);

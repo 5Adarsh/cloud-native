@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_URL } from '../config';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -8,7 +9,7 @@ function ProductDetails() {
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/products/${id}`)
+    axios.get(`${API_URL}/api/products/${id}`)
       .then(res => setProduct(res.data))
       .catch(err => console.error(err));
   }, [id]);
@@ -18,7 +19,7 @@ function ProductDetails() {
       const user = JSON.parse(localStorage.getItem('user'));
       if (!user) return navigate('/login');
       
-      await axios.post('http://localhost:8080/api/cart', {
+      await axios.post(`${API_URL}/api/cart`, {
         userId: user.id,
         productId: product._id,
         quantity: 1

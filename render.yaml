@@ -1,0 +1,97 @@
+services:
+  - type: pserv
+    name: user-service
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    rootDir: user-service
+    envVars:
+      - key: PORT
+        value: 3001
+      - key: JWT_SECRET
+        generateValue: true
+
+  - type: pserv
+    name: product-service
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    rootDir: product-service
+    envVars:
+      - key: PORT
+        value: 3002
+
+  - type: pserv
+    name: cart-service
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    rootDir: cart-service
+    envVars:
+      - key: PORT
+        value: 3003
+
+  - type: pserv
+    name: order-service
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    rootDir: order-service
+    envVars:
+      - key: PORT
+        value: 3004
+
+  - type: pserv
+    name: serverless-webhook
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    rootDir: serverless
+    envVars:
+      - key: PORT
+        value: 5001
+
+  - type: pserv
+    name: payment-service
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    rootDir: payment-service
+    envVars:
+      - key: PORT
+        value: 3005
+      - key: SERVERLESS_URL
+        value: http://serverless-webhook:5001/ecommerce/us-central1/paymentWebhook
+
+  - type: web
+    name: api-gateway
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    rootDir: api-gateway
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: USER_SERVICE_URL
+        value: http://user-service:3001
+      - key: PRODUCT_SERVICE_URL
+        value: http://product-service:3002
+      - key: CART_SERVICE_URL
+        value: http://cart-service:3003
+      - key: ORDER_SERVICE_URL
+        value: http://order-service:3004
+      - key: PAYMENT_SERVICE_URL
+        value: http://payment-service:3005
+
+  - type: web
+    name: frontend
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    rootDir: frontend
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: api-gateway
+          envVarKey: RENDER_EXTERNAL_URL

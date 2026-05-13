@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_URL } from '../config';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -12,7 +13,7 @@ function Home() {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/products?search=${search}`);
+      const res = await axios.get(`${API_URL}/api/products?search=${search}`);
       setProducts(res.data);
     } catch (err) {
       console.error(err);

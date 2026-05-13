@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_URL } from '../config';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,7 +18,7 @@ function Cart() {
 
   const fetchCart = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/cart/${user.id}`);
+      const res = await axios.get(`${API_URL}/api/cart/${user.id}`);
       setCartItems(res.data);
     } catch (err) {
       console.error(err);
@@ -26,7 +27,7 @@ function Cart() {
 
   const removeFromCart = async (productId) => {
     try {
-      await axios.delete(`http://localhost:8080/api/cart/${user.id}/${productId}`);
+      await axios.delete(`${API_URL}/api/cart/${user.id}/${productId}`);
       fetchCart();
     } catch (err) {
       console.error(err);

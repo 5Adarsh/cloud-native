@@ -7,7 +7,7 @@ services:
     rootDir: user-service
     envVars:
       - key: PORT
-        value: 3001
+        value: "3001"
       - key: JWT_SECRET
         generateValue: true
 
@@ -19,7 +19,7 @@ services:
     rootDir: product-service
     envVars:
       - key: PORT
-        value: 3002
+        value: "3002"
 
   - type: pserv
     name: cart-service
@@ -29,7 +29,7 @@ services:
     rootDir: cart-service
     envVars:
       - key: PORT
-        value: 3003
+        value: "3003"
 
   - type: pserv
     name: order-service
@@ -39,7 +39,7 @@ services:
     rootDir: order-service
     envVars:
       - key: PORT
-        value: 3004
+        value: "3004"
 
   - type: pserv
     name: serverless-webhook
@@ -49,7 +49,7 @@ services:
     rootDir: serverless
     envVars:
       - key: PORT
-        value: 5001
+        value: "5001"
 
   - type: pserv
     name: payment-service
@@ -59,7 +59,7 @@ services:
     rootDir: payment-service
     envVars:
       - key: PORT
-        value: 3005
+        value: "3005"
       - key: SERVERLESS_URL
         value: http://serverless-webhook:5001/ecommerce/us-central1/paymentWebhook
 
@@ -71,7 +71,7 @@ services:
     rootDir: api-gateway
     envVars:
       - key: PORT
-        value: 8080
+        value: "8080"
       - key: USER_SERVICE_URL
         value: http://user-service:3001
       - key: PRODUCT_SERVICE_URL
@@ -91,7 +91,4 @@ services:
     rootDir: frontend
     envVars:
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: api-gateway
-          envVarKey: RENDER_EXTERNAL_URL
+        sync: false
